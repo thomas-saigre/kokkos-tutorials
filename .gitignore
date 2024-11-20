@@ -1,4 +1,4 @@
-
+**/build/**
 spack-build/
 spack-build-env.txt
 spack-build-out.txt
