@@ -1,4 +1,6 @@
 **/build/**
+**/build_cuda/**
+**/build_openmp/**
 spack-build/
 spack-build-env.txt
 spack-build-out.txt

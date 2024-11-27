@@ -26,7 +26,7 @@
 
 // EXERCISE: Include Kokkos_Core.hpp.
 //           cmath library unnecessary after.
-// #include <Kokkos_Core.hpp>
+#include <Kokkos_Core.hpp>
 
 void checkSizes( int &N, int &M, int &S, int &nrepeat );
 
@@ -70,8 +70,8 @@ int main( int argc, char* argv[] )
 
   // EXERCISE: Initialize Kokkos runtime.
   //           Include braces to encapsulate code between initialize and finalize calls
-  // Kokkos::initialize( argc, argv );
-  // {
+  Kokkos::initialize( argc, argv );
+  {
 
   // For the sake of simplicity in this exercise, we're using std::malloc directly, but
   // later on we'll learn a better way, so generally don't do this in Kokkos programs.
@@ -85,23 +85,23 @@ int main( int argc, char* argv[] )
 
   // Initialize y vector.
   // EXERCISE: Convert outer loop to Kokkos::parallel_for.
-  for ( int i = 0; i < N; ++i ) {
+  Kokkos::parallel_for( "initiate_y", N, KOKKOS_LAMBDA( const int i ) {
     y[ i ] = 1;
-  }
+  });
 
   // Initialize x vector.
   // EXERCISE: Convert outer loop to Kokkos::parallel_for.
-  for ( int i = 0; i < M; ++i ) {
+  Kokkos::parallel_for( "initiate_x", M, KOKKOS_LAMBDA( const int i ) {
     x[ i ] = 1;
-  }
+  });
 
   // Initialize A matrix, note 2D indexing computation.
   // EXERCISE: Convert outer loop to Kokkos::parallel_for.
-  for ( int j = 0; j < N; ++j ) {
+  Kokkos::parallel_for( "initiate_A", N, KOKKOS_LAMBDA( const int j ) {
     for ( int i = 0; i < M; ++i ) {
       A[ j * M + i ] = 1;
     }
-  }
+  });
 
   // Timer products.
   //Kokkos::Timer timer;
@@ -134,7 +134,7 @@ int main( int argc, char* argv[] )
     }
   }
 
-  
+
 
   // Calculate time.
   //double time = timer.seconds();
@@ -157,8 +157,8 @@ int main( int argc, char* argv[] )
   std::free(x);
 
   // EXERCISE: finalize Kokkos runtime
-  // }
-  // Kokkos::finalize();
+  }
+  Kokkos::finalize();
 
   return 0;
 }
